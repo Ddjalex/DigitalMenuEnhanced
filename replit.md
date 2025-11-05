@@ -142,7 +142,7 @@ The system collects and stores customer data in a format ready for SMS marketing
 - **Footer Enhancement:**
   - "Powered by Neo Digital Solution" section
   - Clickable Neo Digital Solution logo (attached_assets/neo_1762334562172.png)
-  - Link to Neo Digital Solution website (https://neodigitalsolution.com)
+  - Link to Neo Digital Solution website (https://neodigitalsolutions.com/)
   - Professional styling with hover effects
   
 - **Admin Settings Panel:**

@@ -16,7 +16,7 @@ if (!file_exists($settingsFile)) {
         ],
         'neo_digital' => [
             'name' => 'Neo Digital Solution',
-            'website' => 'https://neodigitalsolution.com',
+            'website' => 'https://neodigitalsolutions.com/',
             'logo' => 'attached_assets/neo_1762334562172.png'
         ]
     ];
@@ -1280,7 +1280,7 @@ $cats = array_values($cats);
     <p>&copy; <?=date('Y')?> Fuji Coffee. All rights reserved.</p>
     <div class="neo-footer">
       <span style="font-size: 0.85rem;">Powered by</span>
-      <a href="<?= htmlspecialchars($siteSettings['neo_digital']['website'] ?? 'https://neodigitalsolution.com') ?>" target="_blank" class="neo-link">
+      <a href="<?= htmlspecialchars($siteSettings['neo_digital']['website'] ?? 'https://neodigitalsolutions.com/') ?>" target="_blank" class="neo-link">
         <img src="<?= htmlspecialchars($siteSettings['neo_digital']['logo'] ?? 'attached_assets/neo_1762334562172.png') ?>" alt="Neo Digital Solution" class="neo-logo">
         <span><?= htmlspecialchars($siteSettings['neo_digital']['name'] ?? 'Neo Digital Solution') ?></span>
       </a>

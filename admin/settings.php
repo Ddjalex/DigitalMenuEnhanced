@@ -18,7 +18,7 @@ if (!file_exists($settingsFile)) {
         ],
         'neo_digital' => [
             'name' => 'Neo Digital Solution',
-            'website' => 'https://neodigitalsolution.com',
+            'website' => 'https://neodigitalsolutions.com/',
             'logo' => 'attached_assets/neo_1762334562172.png'
         ]
     ];
