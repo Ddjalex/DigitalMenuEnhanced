@@ -769,9 +769,9 @@ $itemsByCat = [
 <body>
   <div class="hero">
     <div class="hero-content">
-      <h1 class="menu-title">Fuji Cafe</h1>
+      <h1 class="menu-title">Fuji Coffee</h1>
       <div class="decorative-line"></div>
-      <p class="menu-subtitle">Digital Menu</p>
+      <p class="menu-subtitle"> Menu</p>
     </div>
   </div>
 
@@ -882,9 +882,6 @@ $itemsByCat = [
             </div>
 
             <div id="error-message" class="error-message" style="display: none;"></div>
-
-            <div class="marketing-notice">
-              <div>
               </div>
             </div>
 
