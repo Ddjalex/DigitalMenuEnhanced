@@ -1,25 +1,29 @@
-# Professional Digital Menu Project
+# Professional Digital Menu with SMS Marketing
 
 ## Overview
 
-This is a **professionally enhanced digital restaurant menu** for Fuji Cafe featuring modern animations, sophisticated design, and an impressive user experience. The project transforms a basic PHP menu into a premium, visually stunning digital menu that follows 2025 restaurant design trends.
+This is a **professionally enhanced digital restaurant menu** for Fuji Cafe featuring modern animations, sophisticated design, food imagery, and integrated customer SMS marketing capabilities. The project transforms a basic PHP menu into a premium, visually stunning digital menu with VIP customer engagement features.
 
 **Key Features:**
-- Stunning animated hero header with gradient background
-- Smooth scroll-triggered animations
+- Stunning food images with lazy loading and zoom animations
+- VIP club customer registration for SMS marketing
+- Beautiful animated hero header with gradient background
+- Smooth scroll-triggered animations throughout
 - Interactive hover effects with elevation and scaling
-- Professional card-based layout with glassmorphism design
+- Professional card-based layout with modern design
 - Responsive mobile-first design
 - Staggered entrance animations for menu items
 - Category navigation with smooth scrolling
 - Professional typography (Playfair Display + Inter fonts)
 - Warm cafe color palette with CSS variables for easy customization
+- Customer phone number collection for personalized lunch notifications
 
 ## User Preferences
 
 - **Communication style:** Simple, everyday language
 - **Design focus:** Professional, modern, visually impressive animations
 - **Target audience:** Restaurant customers viewing digital menus
+- **Business goal:** Collect customer phone numbers for SMS marketing campaigns
 
 ## System Architecture
 
@@ -28,14 +32,15 @@ This is a **professionally enhanced digital restaurant menu** for Fuji Cafe feat
 **Technology Stack:**
 - **PHP 8.2** - Server-side rendering
 - **Pure CSS3** - Advanced animations, transforms, transitions, grid, flexbox
-- **Vanilla JavaScript** - Smooth scroll navigation, intersection observers
+- **Vanilla JavaScript** - AJAX form submission, smooth scroll navigation, intersection observers
 - **Google Fonts** - Playfair Display (headings) + Inter (body text)
 
 **Design System:**
 - CSS custom properties for colors, shadows, and gradients
-- Modular animation keyframes (fadeIn, slideIn, pulse, etc.)
-- Responsive breakpoints: 768px (mobile)
+- Modular animation keyframes (fadeIn, slideIn, pulse, imageReveal, etc.)
+- Responsive grid layout with auto-fill (min 320px cards)
 - Professional color scheme: Warm browns, cream backgrounds, gold accents
+- Error and success state animations
 
 ### Backend Architecture
 
@@ -43,31 +48,48 @@ This is a **professionally enhanced digital restaurant menu** for Fuji Cafe feat
 - Original PHP backend queries preserved
 - Multi-tenant architecture support
 - Fetches categories and menu items from MySQL database
+- Now includes `image_url` field for food images
 - Prepared statements for security
+
+**VIP Customer Management:**
+- AJAX-powered customer registration
+- Phone number validation (9-digit Ethiopian format)
+- Automatic +251 country prefix addition
+- Duplicate detection to prevent re-registration
+- Data stored in JSON format (`vip_customers.json`)
+- File locking (LOCK_EX) to prevent concurrent write issues
+- Ready for Twilio SMS integration
 
 **File Structure:**
 ```
 /attached_assets/index (3)_1762330908828.php  # Enhanced production file
-/index.php                                      # Demo version with sample data
+/index.php                                      # Demo version with sample data and images
+/save_vip_customer.php                          # VIP customer registration backend
+/vip_customers.json                             # Customer data storage (auto-created)
 ```
 
 ### Data Storage
 
-- **Production:** MySQL database with tables: `tenants`, `menu_categories`, `menu_items`
-- **Demo:** PHP arrays with sample menu data for testing
+- **Production Menu:** MySQL database with tables: `tenants`, `menu_categories`, `menu_items`
+- **Demo Menu:** PHP arrays with sample menu data and Unsplash food images
+- **VIP Customers:** JSON file with structured records (timestamp, name, phone, review, IP)
 
 ### Animation Features
 
 1. **Hero Animations:** Gradient shift, floating patterns, fade-in effects
 2. **Category Animations:** Staggered fade-up, underline on hover
 3. **Item Animations:** Cascading waterfall effect, shimmer on hover
-4. **Micro-interactions:** Price scaling, button transforms, scroll-to-top
-5. **Performance:** GPU-accelerated (transform/opacity only)
+4. **Image Animations:** Lazy loading with reveal effect, zoom on hover
+5. **Form Animations:** Focus transitions, loading states, success/error feedback
+6. **Micro-interactions:** Price scaling, button transforms, scroll-to-top
+7. **Performance:** GPU-accelerated (transform/opacity only)
 
 ## External Dependencies
 
 ### Third-party Services
 - **Google Fonts API** - Typography (Playfair Display, Inter)
+- **Unsplash** - Mock food images (demo version only)
+- **Twilio** (ready for integration) - SMS marketing notifications
 
 ### Package Dependencies
 - **PHP 8.2** - Server runtime
@@ -75,31 +97,101 @@ This is a **professionally enhanced digital restaurant menu** for Fuji Cafe feat
 
 ### Browser Requirements
 - Modern browsers with CSS Grid, Flexbox, Custom Properties support
-- JavaScript enabled for smooth scroll and intersection observers
+- JavaScript enabled for AJAX submissions, smooth scroll, and intersection observers
+- Fetch API support for form submissions
+
+## SMS Marketing Integration
+
+### Current Implementation
+- Customer name and phone number collection
+- Phone validation (9-digit format)
+- Automatic country prefix (+251 for Ethiopia)
+- Optional message/review field
+- Duplicate detection
+- Data stored in structured JSON format
+
+### Integration Ready
+The system collects and stores customer data in a format ready for SMS marketing platforms:
+```json
+{
+  "timestamp": "2025-11-05 12:30:45",
+  "name": "Customer Name",
+  "phone": "+251912345678",
+  "review": "Optional customer message",
+  "ip_address": "127.0.0.1"
+}
+```
+
+**Next Step:** Connect to Twilio using the Twilio connector (`connector:ccfg_twilio_01K69QJTED9YTJFE2SJ7E4SY08`) to send automated lunch notifications to registered VIP customers.
 
 ## Recent Changes
 
-**November 5, 2025:**
+**November 5, 2025 - Major Enhancement:**
+- Added food images to all menu items with lazy loading
+- Implemented VIP club customer registration system
+- Created AJAX-powered form with error handling
+- Added backend validation and data persistence
+- Implemented phone number formatting (+251 prefix)
+- Added duplicate customer detection
+- Enhanced grid layout for menu items (responsive cards)
+- Added image zoom animations on hover
+- Implemented success and error state feedback
+- Added file locking for concurrent write safety
+- Integrated Twilio-ready data structure for SMS marketing
+- Updated both production and demo versions
+
+**Previous Updates:**
 - Enhanced digital menu with professional animations and modern design
 - Added CSS custom properties for easy theme customization
 - Implemented staggered entrance animations for menu items
 - Created category navigation with smooth scroll functionality
 - Added responsive design with mobile optimizations
 - Integrated Google Fonts (Playfair Display + Inter)
-- Created demo version with sample data for testing
 - Set up PHP 8.2 development environment
 - Configured PHP server workflow on port 5000
 
+## Production Deployment Notes
+
+### Database Requirements
+Add `image_url` field to your `menu_items` table:
+```sql
+ALTER TABLE menu_items ADD COLUMN image_url VARCHAR(500) NULL;
+```
+
+### File Permissions
+Ensure web server can write to the directory for `vip_customers.json`:
+```bash
+chmod 775 /path/to/project
+```
+
+### Admin Dashboard Integration
+- Images can be uploaded and managed via admin dashboard
+- The `image_url` field stores the path/URL to food images
+- Mock images in demo can be replaced with actual food photography
+
+### SMS Marketing Setup
+1. Set up Twilio account and get API credentials
+2. Use the Twilio connector integration in Replit
+3. Create a scheduled script to read `vip_customers.json`
+4. Send personalized lunch notifications at designated times
+5. Track engagement and optimize message timing
+
 ## Next Phase Enhancements (Optional)
 
+- Integrate Twilio API for automated lunch-time SMS notifications
+- Add admin dashboard for viewing registered VIP customers
+- Implement email marketing alongside SMS
+- Add customer preferences (dietary restrictions, favorite categories)
+- Create analytics dashboard for customer engagement
 - Add `prefers-reduced-motion` media query for accessibility
 - Additional breakpoint at 1024px for tablet/large screens
-- High-resolution food photography with lazy loading
+- High-resolution food photography with upload capability
 - Dark mode toggle with theme transition
 - Search and filter functionality
 - Allergen information badges
 - Print-friendly stylesheet
+- Export customer data to CSV/Excel
 
 ---
 
-**Status:** Production-ready digital menu with professional animations and modern design ✨
+**Status:** Production-ready digital menu with images, animations, and SMS marketing integration ✨🍽️📱
