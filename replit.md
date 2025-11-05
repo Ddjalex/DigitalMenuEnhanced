@@ -65,10 +65,26 @@ This is a **professionally enhanced digital restaurant menu** for Fuji Cafe feat
 
 **File Structure:**
 ```
-/attached_assets/index (3)_1762330908828.php  # Enhanced production file
-/index.php                                      # Demo version with sample data and images
-/save_vip_customer.php                          # VIP customer registration backend
-/vip_customers.json                             # Customer data storage (auto-created)
+/index.php                          # Main digital menu with animations
+/login.php                          # Redirect to admin login
+/save_vip_customer.php              # VIP customer registration backend
+/schema.sql                         # Database schema documentation
+/uploads/                           # Uploaded menu item images
+/uploads/.htaccess                  # Security: prevent PHP execution
+/admin/
+  ├── index.php                     # Menu management with file upload
+  ├── login.php                     # Admin authentication
+  ├── logout.php                    # Session logout
+  ├── orders.php                    # Order management
+  ├── settings.php                  # Site settings (social media, contact)
+  ├── change_password.php           # Password change functionality
+  └── session.php                   # Session management
+/vip_customers.json                 # Customer data storage
+/menu_items.json                    # Menu items data
+/orders.json                        # Orders data
+/reviews.json                       # Rating/review data
+/site_settings.json                 # Site configuration
+/admin_users.json                   # Admin credentials
 ```
 
 ### Data Storage
@@ -128,6 +144,33 @@ The system collects and stores customer data in a format ready for SMS marketing
 **Next Step:** Connect to Twilio using the Twilio connector (`connector:ccfg_twilio_01K69QJTED9YTJFE2SJ7E4SY08`) to send automated lunch notifications to registered VIP customers.
 
 ## Recent Changes
+
+**November 5, 2025 - Final Updates:**
+- **File Upload System:**
+  - Changed admin menu item form from URL input to secure file upload
+  - Server-side MIME type validation using finfo_file()
+  - Whitelist validation for extensions (jpg, jpeg, png, gif, webp)
+  - .htaccess protection in uploads directory to prevent PHP execution
+  - Uploads stored in /uploads/ directory with unique filenames
+  
+- **Admin Security:**
+  - Added change password functionality at /admin/change_password.php
+  - Password validation (minimum 6 characters)
+  - Current password verification before update
+  - Secure password hashing with password_hash()
+  - Admin credentials stored in admin_users.json
+  
+- **UI Improvements:**
+  - Mobile menu resized: 260px desktop, 70% mobile (max 280px)
+  - Cleaner, more professional mobile navigation
+  - Footer branding updated to match reference design
+  - Logo displayed first, followed by "Powered by Neo Digital Solution"
+  
+- **Documentation:**
+  - Created comprehensive schema.sql file
+  - Documents production MySQL/PostgreSQL database structure
+  - Includes migration notes from JSON to database
+  - Sample data and performance indexes included
 
 **November 5, 2025 - Mobile Navigation & Branding Update:**
 - **Mobile Navigation Menu:**
