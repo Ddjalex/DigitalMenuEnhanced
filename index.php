@@ -450,6 +450,62 @@ $itemsByCat = [
     50% { opacity: 0.3; }
   }
 
+  .item-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .stars {
+    display: flex;
+    gap: 2px;
+  }
+
+  .star {
+    font-size: 1.2rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .star.active,
+  .star:hover {
+    color: #fbbf24;
+    transform: scale(1.2);
+  }
+
+  .rating-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-left: 4px;
+  }
+
+  .order-btn {
+    width: 100%;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 12px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .order-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, #059669 0%, var(--success-color) 100%);
+  }
+
+  .order-btn:active {
+    transform: translateY(0);
+  }
+
   .review-section {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(212, 165, 116, 0.1) 100%);
     border-radius: 24px;
@@ -822,8 +878,22 @@ $itemsByCat = [
                   <?php if (!empty($it['description'])): ?>
                     <p class="item-description"><?=htmlspecialchars($it['description'])?></p>
                   <?php endif; ?>
+                  
+                  <div class="item-rating" data-item-id="<?=$it['id']?>">
+                    <div class="stars">
+                      <?php for($i=1; $i<=5; $i++): ?>
+                        <span class="star" data-rating="<?=$i?>">★</span>
+                      <?php endfor; ?>
+                    </div>
+                    <span class="rating-count">(0 reviews)</span>
+                  </div>
+                  
                   <?php if (!$it['is_available']): ?>
                     <div class="availability-badge">Currently Unavailable</div>
+                  <?php else: ?>
+                    <button class="order-btn" data-item-id="<?=$it['id']?>" data-item-name="<?=htmlspecialchars($it['name'])?>" data-item-price="<?=$it['price']?>">
+                      🛒 Order Now
+                    </button>
                   <?php endif; ?>
                 </div>
               </div>
@@ -991,6 +1061,125 @@ $itemsByCat = [
           }
         });
       }
+      
+      // Load reviews and update star ratings
+      async function loadReviews() {
+        try {
+          const response = await fetch('get_reviews.php');
+          const reviews = await response.json();
+          
+          Object.keys(reviews).forEach(itemId => {
+            const ratingEl = document.querySelector(`[data-item-id="${itemId}"]`);
+            if (ratingEl) {
+              const stars = ratingEl.querySelectorAll('.star');
+              const avgRating = reviews[itemId].average;
+              const count = reviews[itemId].count;
+              
+              stars.forEach((star, index) => {
+                if (index < Math.floor(avgRating)) {
+                  star.classList.add('active');
+                }
+              });
+              
+              const countEl = ratingEl.querySelector('.rating-count');
+              countEl.textContent = `(${count} review${count !== 1 ? 's' : ''})`;
+            }
+          });
+        } catch (error) {
+          console.error('Failed to load reviews:', error);
+        }
+      }
+      
+      loadReviews();
+      
+      // Handle star rating clicks
+      document.querySelectorAll('.star').forEach(star => {
+        star.addEventListener('click', async function() {
+          const itemId = this.closest('.item-rating').dataset.itemId;
+          const rating = parseInt(this.dataset.rating);
+          
+          try {
+            const formData = new FormData();
+            formData.append('item_id', itemId);
+            formData.append('rating', rating);
+            
+            const response = await fetch('save_review.php', {
+              method: 'POST',
+              body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+              alert(result.message);
+              loadReviews();
+            }
+          } catch (error) {
+            console.error('Failed to save review:', error);
+          }
+        });
+      });
+      
+      // Handle order button clicks
+      document.querySelectorAll('.order-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+          const itemId = this.dataset.itemId;
+          const itemName = this.dataset.itemName;
+          const itemPrice = this.dataset.itemPrice;
+          
+          const customerName = prompt('Enter your name:');
+          if (!customerName) return;
+          
+          const customerPhone = prompt('Enter your phone number (9 digits):');
+          if (!customerPhone) return;
+          
+          if (!/^[0-9]{9}$/.test(customerPhone)) {
+            alert('Please enter a valid 9-digit phone number');
+            return;
+          }
+          
+          const quantity = prompt('Enter quantity:', '1');
+          if (!quantity || quantity < 1) return;
+          
+          try {
+            const formData = new FormData();
+            formData.append('item_id', itemId);
+            formData.append('item_name', itemName);
+            formData.append('item_price', itemPrice);
+            formData.append('customer_name', customerName);
+            formData.append('customer_phone', customerPhone);
+            formData.append('quantity', quantity);
+            
+            this.disabled = true;
+            this.textContent = 'Processing...';
+            
+            const response = await fetch('place_order.php', {
+              method: 'POST',
+              body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+              alert(result.message);
+              this.textContent = '✓ Ordered';
+              setTimeout(() => {
+                this.disabled = false;
+                this.textContent = '🛒 Order Now';
+              }, 3000);
+            } else {
+              alert('Error: ' + result.error);
+              this.disabled = false;
+              this.textContent = '🛒 Order Now';
+            }
+          } catch (error) {
+            console.error('Failed to place order:', error);
+            alert('Failed to place order. Please try again.');
+            this.disabled = false;
+            this.textContent = '🛒 Order Now';
+          }
+        });
+      });
     });
   </script>
 </body>
