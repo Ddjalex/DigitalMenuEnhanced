@@ -1,47 +1,34 @@
 <?php
-// Load this tenant's config then shared DB helpers
-require __DIR__ . '/config.php';
-require __DIR__ . '/../_shared/db.php';
+$cats = [
+    ['id' => 1, 'name' => 'Appetizers'],
+    ['id' => 2, 'name' => 'Main Courses'],
+    ['id' => 3, 'name' => 'Beverages'],
+    ['id' => 4, 'name' => 'Desserts']
+];
 
-$db = dbi();
-
-// find tenant id
-$tenantId = 0;
-$stmt = $db->prepare("SELECT id FROM tenants WHERE slug=? AND is_active=1 LIMIT 1");
-$stmt->bind_param('s', $slug);
-$slug = TENANT_SLUG;
-$stmt->execute();
-$stmt->bind_result($tenantId);
-$stmt->fetch();
-$stmt->close();
-
-if (!$tenantId) {
-    http_response_code(404);
-    exit('Tenant not found');
-}
-
-// categories
-$cats = [];
-$stmt = $db->prepare("SELECT id, name FROM menu_categories WHERE tenant_id=? AND is_active=1 ORDER BY display_order, id");
-$stmt->bind_param('i', $tenantId);
-$stmt->execute();
-$res = $stmt->get_result();
-while ($row = $res->fetch_assoc()) $cats[] = $row;
-$stmt->close();
-
-// items by category
-$itemsByCat = [];
-if ($cats) {
-    $ids = implode(',', array_map('intval', array_column($cats,'id')));
-    $sql = "SELECT id, category_id, name, description, price, is_available
-            FROM menu_items
-            WHERE tenant_id={$tenantId} AND category_id IN ($ids) AND is_active=1
-            ORDER BY display_order, id";
-    $res = $db->query($sql);
-    while ($row = $res->fetch_assoc()) {
-        $itemsByCat[(int)$row['category_id']][] = $row;
-    }
-}
+$itemsByCat = [
+    1 => [
+        ['id' => 1, 'name' => 'Spring Rolls', 'description' => 'Crispy vegetable spring rolls served with sweet chili sauce', 'price' => 85.00, 'is_available' => 1],
+        ['id' => 2, 'name' => 'Edamame', 'description' => 'Steamed soybeans with sea salt', 'price' => 65.00, 'is_available' => 1],
+        ['id' => 3, 'name' => 'Gyoza', 'description' => 'Pan-fried dumplings with a savory filling', 'price' => 95.00, 'is_available' => 1]
+    ],
+    2 => [
+        ['id' => 4, 'name' => 'Teriyaki Chicken', 'description' => 'Grilled chicken glazed with house-made teriyaki sauce, served with steamed rice and vegetables', 'price' => 245.00, 'is_available' => 1],
+        ['id' => 5, 'name' => 'Salmon Sushi Platter', 'description' => 'Fresh salmon nigiri and rolls with wasabi and pickled ginger', 'price' => 395.00, 'is_available' => 1],
+        ['id' => 6, 'name' => 'Vegetable Ramen', 'description' => 'Rich miso broth with fresh vegetables, noodles, and tofu', 'price' => 185.00, 'is_available' => 1],
+        ['id' => 7, 'name' => 'Beef Udon', 'description' => 'Thick udon noodles with tender beef slices in savory broth', 'price' => 285.00, 'is_available' => 0]
+    ],
+    3 => [
+        ['id' => 8, 'name' => 'Japanese Green Tea', 'description' => 'Premium sencha green tea', 'price' => 45.00, 'is_available' => 1],
+        ['id' => 9, 'name' => 'Iced Matcha Latte', 'description' => 'Creamy matcha green tea latte over ice', 'price' => 75.00, 'is_available' => 1],
+        ['id' => 10, 'name' => 'Fresh Fruit Smoothie', 'description' => 'Blended seasonal fruits with a touch of honey', 'price' => 85.00, 'is_available' => 1]
+    ],
+    4 => [
+        ['id' => 11, 'name' => 'Mochi Ice Cream', 'description' => 'Traditional Japanese rice cake with ice cream filling (assorted flavors)', 'price' => 65.00, 'is_available' => 1],
+        ['id' => 12, 'name' => 'Matcha Tiramisu', 'description' => 'Italian classic with a Japanese twist - layers of matcha-soaked ladyfingers', 'price' => 95.00, 'is_available' => 1],
+        ['id' => 13, 'name' => 'Dorayaki', 'description' => 'Sweet red bean pancake sandwich', 'price' => 55.00, 'is_available' => 1]
+    ]
+];
 ?>
 <!doctype html>
 <html lang="en">
