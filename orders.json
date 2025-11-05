@@ -9,7 +9,8 @@
         "total_price": 185,
         "customer_name": "jasdn",
         "customer_phone": "+251974408281",
-        "status": "pending",
-        "ip_address": "172.31.118.34"
+        "status": "accepted",
+        "ip_address": "172.31.118.34",
+        "updated_at": "2025-11-05 09:44:01"
     }
 ]

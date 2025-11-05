@@ -872,7 +872,7 @@ $cats = array_values($cats);
     position: fixed;
     top: 0;
     left: -100%;
-    width: 280px;
+    width: 260px;
     height: 100vh;
     background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
     box-shadow: var(--shadow-xl);
@@ -1003,38 +1003,37 @@ $cats = array_values($cats);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 8px;
     margin-top: 16px;
     padding-top: 16px;
     border-top: 1px solid var(--border-color);
   }
 
   .neo-logo {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     object-fit: contain;
   }
 
   .neo-link {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     color: var(--text-secondary);
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
     transition: all 0.3s ease;
   }
 
   .neo-link:hover {
     color: var(--secondary-color);
-    transform: translateX(3px);
   }
 
   @media (max-width: 768px) {
     .mobile-menu {
-      width: 85%;
-      max-width: 320px;
+      width: 70%;
+      max-width: 280px;
     }
   }
 
@@ -1279,10 +1278,9 @@ $cats = array_values($cats);
   <div class="footer">
     <p>&copy; <?=date('Y')?> Fuji Coffee. All rights reserved.</p>
     <div class="neo-footer">
-      <span style="font-size: 0.85rem;">Powered by</span>
       <a href="<?= htmlspecialchars($siteSettings['neo_digital']['website'] ?? 'https://neodigitalsolutions.com/') ?>" target="_blank" class="neo-link">
         <img src="<?= htmlspecialchars($siteSettings['neo_digital']['logo'] ?? 'attached_assets/neo_1762334562172.png') ?>" alt="Neo Digital Solution" class="neo-logo">
-        <span><?= htmlspecialchars($siteSettings['neo_digital']['name'] ?? 'Neo Digital Solution') ?></span>
+        <span>Powered by <?= htmlspecialchars($siteSettings['neo_digital']['name'] ?? 'Neo Digital Solution') ?></span>
       </a>
     </div>
   </div>

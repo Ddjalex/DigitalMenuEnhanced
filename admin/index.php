@@ -25,10 +25,52 @@ if (!file_exists($menuFile)) {
 
 $menuItems = json_decode(file_get_contents($menuFile), true) ?? [];
 
+function handleImageUpload($file) {
+    if (!isset($file) || $file['error'] === UPLOAD_ERR_NO_FILE) {
+        return null;
+    }
+    
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return null;
+    }
+    
+    $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $actualMimeType = finfo_file($finfo, $file['tmp_name']);
+    finfo_close($finfo);
+    
+    if (!in_array($actualMimeType, $allowedMimeTypes)) {
+        return null;
+    }
+    
+    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (!in_array($extension, $allowedExtensions)) {
+        return null;
+    }
+    
+    $uploadsDir = __DIR__ . '/../uploads/';
+    if (!file_exists($uploadsDir)) {
+        mkdir($uploadsDir, 0755, true);
+    }
+    
+    $filename = uniqid('menu_') . '.' . $extension;
+    $destination = $uploadsDir . $filename;
+    
+    if (move_uploaded_file($file['tmp_name'], $destination)) {
+        return 'uploads/' . $filename;
+    }
+    
+    return null;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
     
     if ($action === 'add') {
+        $imagePath = handleImageUpload($_FILES['image'] ?? null);
+        
         $newId = max(array_column($menuItems, 'id')) + 1;
         $newItem = [
             'id' => $newId,
@@ -37,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'description' => $_POST['description'] ?? '',
             'price' => (float)($_POST['price'] ?? 0),
             'is_available' => (int)($_POST['is_available'] ?? 1),
-            'image' => $_POST['image'] ?? ''
+            'image' => $imagePath ?? 'https://via.placeholder.com/600x400?text=No+Image'
         ];
         $menuItems[] = $newItem;
         file_put_contents($menuFile, json_encode($menuItems, JSON_PRETTY_PRINT), LOCK_EX);
@@ -54,7 +96,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $item['description'] = $_POST['description'] ?? $item['description'];
                 $item['price'] = (float)($_POST['price'] ?? $item['price']);
                 $item['is_available'] = (int)($_POST['is_available'] ?? $item['is_available']);
-                $item['image'] = $_POST['image'] ?? $item['image'];
+                
+                $newImage = handleImageUpload($_FILES['image'] ?? null);
+                if ($newImage) {
+                    $item['image'] = $newImage;
+                }
+                
                 break;
             }
         }
@@ -304,6 +351,7 @@ $categories = array_unique(array_column($menuItems, 'category'));
                 <a href="index.php" class="active">Menu</a>
                 <a href="orders.php">Orders</a>
                 <a href="settings.php">⚙️ Settings</a>
+                <a href="change_password.php">🔒 Password</a>
                 <a href="../index.php" target="_blank">View Site</a>
                 <a href="logout.php">Logout</a>
             </nav>
@@ -364,7 +412,7 @@ $categories = array_unique(array_column($menuItems, 'category'));
     <div id="modal" class="modal">
         <div class="modal-content">
             <h2 id="modal-title">Add Menu Item</h2>
-            <form id="item-form" method="POST">
+            <form id="item-form" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="action" id="form-action" value="add">
                 <input type="hidden" name="id" id="form-id">
                 
@@ -394,8 +442,9 @@ $categories = array_unique(array_column($menuItems, 'category'));
                 </div>
                 
                 <div class="form-group">
-                    <label>Image URL</label>
-                    <input type="text" name="image" id="form-image" required>
+                    <label>Food Image</label>
+                    <input type="file" name="image" id="form-image" accept="image/*">
+                    <small style="color: #718096; display: block; margin-top: 5px;">Upload JPG, PNG, or WEBP image (optional)</small>
                 </div>
                 
                 <div class="form-group">

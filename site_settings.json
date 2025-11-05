@@ -1,17 +1,17 @@
 {
-  "social_media": {
-    "facebook": "",
-    "instagram": "",
-    "tiktok": ""
-  },
-  "contact": {
-    "phone": "",
-    "email": "",
-    "address": ""
-  },
-  "neo_digital": {
-    "name": "Neo Digital Solution",
-    "website": "https://neodigitalsolutions.com/",
-    "logo": "attached_assets/neo_1762334562172.png"
-  }
+    "social_media": {
+        "facebook": "",
+        "instagram": "",
+        "tiktok": "https:\/\/www.tiktok.com\/@almeseged"
+    },
+    "contact": {
+        "phone": "+251974408281",
+        "email": "almesagadw@gmail.com",
+        "address": "Addis abeba"
+    },
+    "neo_digital": {
+        "name": "Neo Digital Solution",
+        "website": "https:\/\/neodigitalsolutions.com\/",
+        "logo": "attached_assets\/neo_1762334562172.png"
+    }
 }

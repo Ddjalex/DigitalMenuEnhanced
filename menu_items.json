@@ -59,7 +59,7 @@
         "category": "Main Courses",
         "description": "Thick udon noodles with tender beef slices in savory broth",
         "price": 285,
-        "is_available": 0,
+        "is_available": 1,
         "image": "https:\/\/images.unsplash.com\/photo-1618841557871-b4664fbf0cb3?w=600&h=400&fit=crop"
     },
     {
