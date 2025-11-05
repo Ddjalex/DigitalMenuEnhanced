@@ -885,7 +885,6 @@ $itemsByCat = [
 
             <div class="marketing-notice">
               <div>
-                <strong>SMS Marketing Benefits:</strong> Receive timely lunch specials, exclusive weekend offers, and birthday surprises. We'll send you personalized notifications based on your preferences. Msg & data rates may apply.
               </div>
             </div>
 
@@ -897,8 +896,8 @@ $itemsByCat = [
   </div>
 
   <div class="footer">
-    <p>&copy; <?=date('Y')?> Fuji Cafe. All rights reserved.</p>
-    <p style="margin-top: 8px; font-size: 0.85rem;">Powered by SMS Marketing · Building customer loyalty, one message at a time</p>
+    <p>&copy; <?=date('Y')?> Fuji Coffee. All rights reserved.</p>
+    <p style="margin-top: 8px; font-size: 0.85rem;">Powered by Neo Digital Soultions
   </div>
 
   <div class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
