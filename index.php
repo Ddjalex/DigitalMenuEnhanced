@@ -904,7 +904,7 @@ $cats = array_values($cats);
                   <?php if (!$it['is_available']): ?>
                     <div class="availability-badge">Currently Unavailable</div>
                   <?php else: ?>
-                    <button class="order-btn" data-item-id="<?=$it['id']?>" data-item-name="<?=htmlspecialchars($it['name'])?>" data-item-price="<?=$it['price']?>">
+                    <button class="order-btn" data-item-id="<?=$it['id']?>">
                       🛒 Order Now
                     </button>
                   <?php endif; ?>
@@ -1137,8 +1137,6 @@ $cats = array_values($cats);
       document.querySelectorAll('.order-btn').forEach(btn => {
         btn.addEventListener('click', async function() {
           const itemId = this.dataset.itemId;
-          const itemName = this.dataset.itemName;
-          const itemPrice = this.dataset.itemPrice;
           
           const customerName = prompt('Enter your name:');
           if (!customerName) return;
@@ -1157,8 +1155,6 @@ $cats = array_values($cats);
           try {
             const formData = new FormData();
             formData.append('item_id', itemId);
-            formData.append('item_name', itemName);
-            formData.append('item_price', itemPrice);
             formData.append('customer_name', customerName);
             formData.append('customer_phone', customerPhone);
             formData.append('quantity', quantity);

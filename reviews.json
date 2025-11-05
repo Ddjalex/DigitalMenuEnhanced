@@ -1,0 +1,18 @@
+[
+    {
+        "id": "review_690b15f3a79a2",
+        "timestamp": "2025-11-05 09:16:35",
+        "item_id": "1",
+        "rating": 5,
+        "customer_name": "Anonymous",
+        "ip_address": "172.31.118.34"
+    },
+    {
+        "id": "review_690b15fda080d",
+        "timestamp": "2025-11-05 09:16:45",
+        "item_id": "1",
+        "rating": 2,
+        "customer_name": "Anonymous",
+        "ip_address": "172.31.118.34"
+    }
+]

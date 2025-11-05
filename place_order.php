@@ -7,18 +7,49 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$itemId = isset($_POST['item_id']) ? trim($_POST['item_id']) : '';
-$itemName = isset($_POST['item_name']) ? trim($_POST['item_name']) : '';
-$itemPrice = isset($_POST['item_price']) ? trim($_POST['item_price']) : '';
+$itemId = isset($_POST['item_id']) ? (int)$_POST['item_id'] : 0;
 $customerName = isset($_POST['customer_name']) ? trim($_POST['customer_name']) : '';
 $customerPhone = isset($_POST['customer_phone']) ? trim($_POST['customer_phone']) : '';
 $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
 
-if (empty($itemId) || empty($customerName) || empty($customerPhone)) {
+if (empty($itemId) || empty($customerName) || empty($customerPhone) || $quantity < 1) {
     http_response_code(400);
     echo json_encode(['success' => false, 'error' => 'All fields are required']);
     exit;
 }
+
+$menuFile = __DIR__ . '/menu_items.json';
+
+if (!file_exists($menuFile)) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => 'Menu not available']);
+    exit;
+}
+
+$menuItems = json_decode(file_get_contents($menuFile), true) ?? [];
+
+$item = null;
+foreach ($menuItems as $menuItem) {
+    if ($menuItem['id'] === $itemId) {
+        $item = $menuItem;
+        break;
+    }
+}
+
+if (!$item) {
+    http_response_code(404);
+    echo json_encode(['success' => false, 'error' => 'Item not found']);
+    exit;
+}
+
+if (!$item['is_available']) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'error' => 'This item is currently unavailable']);
+    exit;
+}
+
+$itemName = $item['name'];
+$itemPrice = (float)$item['price'];
 
 if (!preg_match('/^[0-9]{9}$/', $customerPhone)) {
     http_response_code(400);
