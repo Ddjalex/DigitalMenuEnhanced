@@ -303,6 +303,7 @@ $categories = array_unique(array_column($menuItems, 'category'));
             <nav class="header-nav">
                 <a href="index.php" class="active">Menu</a>
                 <a href="orders.php">Orders</a>
+                <a href="settings.php">⚙️ Settings</a>
                 <a href="../index.php" target="_blank">View Site</a>
                 <a href="logout.php">Logout</a>
             </nav>

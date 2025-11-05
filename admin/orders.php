@@ -239,6 +239,7 @@ $rejectedOrders = array_filter($orders, fn($o) => $o['status'] === 'rejected');
             <nav class="header-nav">
                 <a href="index.php">Menu</a>
                 <a href="orders.php" class="active">Orders</a>
+                <a href="settings.php">⚙️ Settings</a>
                 <a href="../index.php" target="_blank">View Site</a>
                 <a href="logout.php">Logout</a>
             </nav>
