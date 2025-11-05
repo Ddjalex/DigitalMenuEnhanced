@@ -1,0 +1,27 @@
+# PHP
+vendor/
+composer.lock
+*.log
+*.cache
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Replit (do not ignore)
+!.replit
+!replit.nix
+
+# Logs
+/tmp/logs/
