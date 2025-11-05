@@ -2,7 +2,7 @@
     {
         "id": 1,
         "name": "Spring Rolls",
-        "category": "Starter",
+        "category": "Appetizers",
         "description": "Crispy vegetable spring rolls served with sweet chili sauce",
         "price": 85,
         "is_available": 1,

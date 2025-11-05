@@ -237,12 +237,13 @@ $rejectedOrders = array_filter($orders, fn($o) => $o['status'] === 'rejected');
         <div class="header-content">
             <h1>🍱 Fuji Cafe Admin</h1>
             <nav class="header-nav">
-                <a href="/admin/index.php">Menu</a>
-                <a href="/admin/orders.php" class="active">Orders</a>
+                <a href="/admin/dashboard.php">📊 Dashboard</a>
+                <a href="/admin/index.php">🍽️ Menu</a>
+                <a href="/admin/orders.php" class="active">📦 Orders</a>
                 <a href="/admin/settings.php">⚙️ Settings</a>
                 <a href="/admin/change_password.php">🔒 Password</a>
-                <a href="/index.php" target="_blank">View Site</a>
-                <a href="/admin/logout.php">Logout</a>
+                <a href="/index.php" target="_blank">👁️ View Site</a>
+                <a href="/admin/logout.php">🚪 Logout</a>
             </nav>
         </div>
     </div>

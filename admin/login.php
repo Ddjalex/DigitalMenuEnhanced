@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
-    header('Location: index.php');
+    header('Location: dashboard.php');
     exit;
 }
 
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['admin_logged_in'] = true;
                 $_SESSION['admin_username'] = $user['username'];
                 $_SESSION['admin_name'] = $user['name'];
-                header('Location: index.php');
+                header('Location: dashboard.php');
                 exit;
             }
         }
