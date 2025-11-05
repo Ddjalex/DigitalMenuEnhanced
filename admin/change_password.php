@@ -2,14 +2,18 @@
 require_once 'session.php';
 requireLogin();
 
-$adminFile = __DIR__ . '/admin_users.json';
+$adminFile = __DIR__ . '/../admin_users.json';
 
 if (!file_exists($adminFile)) {
-    $defaultAdmin = [
-        'username' => 'admin',
-        'password' => password_hash('password', PASSWORD_DEFAULT)
+    $defaultUsers = [
+        [
+            'username' => 'admin',
+            'password' => password_hash('password', PASSWORD_DEFAULT),
+            'name' => 'Administrator',
+            'created_at' => date('Y-m-d H:i:s')
+        ]
     ];
-    file_put_contents($adminFile, json_encode($defaultAdmin, JSON_PRETTY_PRINT), LOCK_EX);
+    file_put_contents($adminFile, json_encode($defaultUsers, JSON_PRETTY_PRINT), LOCK_EX);
 }
 
 $message = '';
@@ -20,18 +24,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newPassword = $_POST['new_password'] ?? '';
     $confirmPassword = $_POST['confirm_password'] ?? '';
     
-    $adminData = json_decode(file_get_contents($adminFile), true);
+    $users = json_decode(file_get_contents($adminFile), true) ?? [];
+    $currentUsername = $_SESSION['admin_username'] ?? 'admin';
     
-    if (!password_verify($currentPassword, $adminData['password'])) {
-        $error = 'Current password is incorrect';
-    } elseif (strlen($newPassword) < 6) {
-        $error = 'New password must be at least 6 characters';
-    } elseif ($newPassword !== $confirmPassword) {
-        $error = 'New passwords do not match';
-    } else {
-        $adminData['password'] = password_hash($newPassword, PASSWORD_DEFAULT);
-        file_put_contents($adminFile, json_encode($adminData, JSON_PRETTY_PRINT), LOCK_EX);
-        $message = 'Password changed successfully!';
+    $passwordChanged = false;
+    foreach ($users as &$user) {
+        if ($user['username'] === $currentUsername) {
+            if (!password_verify($currentPassword, $user['password'])) {
+                $error = 'Current password is incorrect';
+            } elseif (strlen($newPassword) < 6) {
+                $error = 'New password must be at least 6 characters';
+            } elseif ($newPassword !== $confirmPassword) {
+                $error = 'New passwords do not match';
+            } else {
+                $user['password'] = password_hash($newPassword, PASSWORD_DEFAULT);
+                file_put_contents($adminFile, json_encode($users, JSON_PRETTY_PRINT), LOCK_EX);
+                $message = 'Password changed successfully!';
+                $passwordChanged = true;
+            }
+            break;
+        }
+    }
+    
+    if (!$passwordChanged && !$error) {
+        $error = 'User not found';
     }
 }
 ?>
