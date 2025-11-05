@@ -479,7 +479,6 @@ $categories = array_unique(array_column($menuItems, 'category'));
             document.getElementById('form-category').value = item.category;
             document.getElementById('form-description').value = item.description;
             document.getElementById('form-price').value = item.price;
-            document.getElementById('form-image').value = item.image;
             document.getElementById('form-available').value = item.is_available;
             document.getElementById('modal').classList.add('active');
         }
