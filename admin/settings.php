@@ -191,10 +191,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="header">
             <h1>🛠️ Site Settings</h1>
             <div style="display: flex; gap: 10px;">
-                <a href="index.php" class="back-btn">Menu</a>
-                <a href="orders.php" class="back-btn">Orders</a>
-                <a href="change_password.php" class="back-btn">🔒 Password</a>
-                <a href="logout.php" class="back-btn">Logout</a>
+                <a href="/admin/index.php" class="back-btn">Menu</a>
+                <a href="/admin/orders.php" class="back-btn">Orders</a>
+                <a href="/admin/change_password.php" class="back-btn">🔒 Password</a>
+                <a href="/admin/logout.php" class="back-btn">Logout</a>
             </div>
         </div>
 
