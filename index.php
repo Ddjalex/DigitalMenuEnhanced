@@ -1,34 +1,47 @@
 <?php
-$cats = [
-    ['id' => 1, 'name' => 'Appetizers'],
-    ['id' => 2, 'name' => 'Main Courses'],
-    ['id' => 3, 'name' => 'Beverages'],
-    ['id' => 4, 'name' => 'Desserts']
-];
+$menuFile = __DIR__ . '/menu_items.json';
 
-$itemsByCat = [
-    1 => [
-        ['id' => 1, 'name' => 'Spring Rolls', 'description' => 'Crispy vegetable spring rolls served with sweet chili sauce', 'price' => 85.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600&h=400&fit=crop'],
-        ['id' => 2, 'name' => 'Edamame', 'description' => 'Steamed soybeans with sea salt', 'price' => 65.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1583963641308-9bc92b8bed32?w=600&h=400&fit=crop'],
-        ['id' => 3, 'name' => 'Gyoza', 'description' => 'Pan-fried dumplings with a savory filling', 'price' => 95.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1630408377656-ed66ae5a6d1a?w=600&h=400&fit=crop']
-    ],
-    2 => [
-        ['id' => 4, 'name' => 'Teriyaki Chicken', 'description' => 'Grilled chicken glazed with house-made teriyaki sauce, served with steamed rice and vegetables', 'price' => 245.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1606850003-cf6563e31d85?w=600&h=400&fit=crop'],
-        ['id' => 5, 'name' => 'Salmon Sushi Platter', 'description' => 'Fresh salmon nigiri and rolls with wasabi and pickled ginger', 'price' => 395.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=600&h=400&fit=crop'],
-        ['id' => 6, 'name' => 'Vegetable Ramen', 'description' => 'Rich miso broth with fresh vegetables, noodles, and tofu', 'price' => 185.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1623341214825-9f4f963727da?w=600&h=400&fit=crop'],
-        ['id' => 7, 'name' => 'Beef Udon', 'description' => 'Thick udon noodles with tender beef slices in savory broth', 'price' => 285.00, 'is_available' => 0, 'image' => 'https://images.unsplash.com/photo-1618841557871-b4664fbf0cb3?w=600&h=400&fit=crop']
-    ],
-    3 => [
-        ['id' => 8, 'name' => 'Japanese Green Tea', 'description' => 'Premium sencha green tea', 'price' => 45.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&h=400&fit=crop'],
-        ['id' => 9, 'name' => 'Iced Matcha Latte', 'description' => 'Creamy matcha green tea latte over ice', 'price' => 75.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=600&h=400&fit=crop'],
-        ['id' => 10, 'name' => 'Fresh Fruit Smoothie', 'description' => 'Blended seasonal fruits with a touch of honey', 'price' => 85.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=600&h=400&fit=crop']
-    ],
-    4 => [
-        ['id' => 11, 'name' => 'Mochi Ice Cream', 'description' => 'Traditional Japanese rice cake with ice cream filling (assorted flavors)', 'price' => 65.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&h=400&fit=crop'],
-        ['id' => 12, 'name' => 'Matcha Tiramisu', 'description' => 'Italian classic with a Japanese twist - layers of matcha-soaked ladyfingers', 'price' => 95.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&h=400&fit=crop'],
-        ['id' => 13, 'name' => 'Dorayaki', 'description' => 'Sweet red bean pancake sandwich', 'price' => 55.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1582716401301-b2407dc7563d?w=600&h=400&fit=crop']
-    ]
-];
+if (!file_exists($menuFile)) {
+    $defaultMenu = [
+        ['id' => 1, 'name' => 'Spring Rolls', 'category' => 'Appetizers', 'description' => 'Crispy vegetable spring rolls served with sweet chili sauce', 'price' => 85.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=600&h=400&fit=crop'],
+        ['id' => 2, 'name' => 'Edamame', 'category' => 'Appetizers', 'description' => 'Steamed soybeans with sea salt', 'price' => 65.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1583963641308-9bc92b8bed32?w=600&h=400&fit=crop'],
+        ['id' => 3, 'name' => 'Gyoza', 'category' => 'Appetizers', 'description' => 'Pan-fried dumplings with a savory filling', 'price' => 95.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1630408377656-ed66ae5a6d1a?w=600&h=400&fit=crop'],
+        ['id' => 4, 'name' => 'Teriyaki Chicken', 'category' => 'Main Courses', 'description' => 'Grilled chicken glazed with house-made teriyaki sauce, served with steamed rice and vegetables', 'price' => 245.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1606850003-cf6563e31d85?w=600&h=400&fit=crop'],
+        ['id' => 5, 'name' => 'Salmon Sushi Platter', 'category' => 'Main Courses', 'description' => 'Fresh salmon nigiri and rolls with wasabi and pickled ginger', 'price' => 395.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=600&h=400&fit=crop'],
+        ['id' => 6, 'name' => 'Vegetable Ramen', 'category' => 'Main Courses', 'description' => 'Rich miso broth with fresh vegetables, noodles, and tofu', 'price' => 185.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1623341214825-9f4f963727da?w=600&h=400&fit=crop'],
+        ['id' => 7, 'name' => 'Beef Udon', 'category' => 'Main Courses', 'description' => 'Thick udon noodles with tender beef slices in savory broth', 'price' => 285.00, 'is_available' => 0, 'image' => 'https://images.unsplash.com/photo-1618841557871-b4664fbf0cb3?w=600&h=400&fit=crop'],
+        ['id' => 8, 'name' => 'Japanese Green Tea', 'category' => 'Beverages', 'description' => 'Premium sencha green tea', 'price' => 45.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600&h=400&fit=crop'],
+        ['id' => 9, 'name' => 'Iced Matcha Latte', 'category' => 'Beverages', 'description' => 'Creamy matcha green tea latte over ice', 'price' => 75.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=600&h=400&fit=crop'],
+        ['id' => 10, 'name' => 'Fresh Fruit Smoothie', 'category' => 'Beverages', 'description' => 'Blended seasonal fruits with a touch of honey', 'price' => 85.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=600&h=400&fit=crop'],
+        ['id' => 11, 'name' => 'Mochi Ice Cream', 'category' => 'Desserts', 'description' => 'Traditional Japanese rice cake with ice cream filling (assorted flavors)', 'price' => 65.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&h=400&fit=crop'],
+        ['id' => 12, 'name' => 'Matcha Tiramisu', 'category' => 'Desserts', 'description' => 'Italian classic with a Japanese twist - layers of matcha-soaked ladyfingers', 'price' => 95.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&h=400&fit=crop'],
+        ['id' => 13, 'name' => 'Dorayaki', 'category' => 'Desserts', 'description' => 'Sweet red bean pancake sandwich', 'price' => 55.00, 'is_available' => 1, 'image' => 'https://images.unsplash.com/photo-1582716401301-b2407dc7563d?w=600&h=400&fit=crop']
+    ];
+    file_put_contents($menuFile, json_encode($defaultMenu, JSON_PRETTY_PRINT), LOCK_EX);
+}
+
+$menuItems = json_decode(file_get_contents($menuFile), true) ?? [];
+
+$cats = [];
+$itemsByCat = [];
+
+foreach ($menuItems as $item) {
+    $category = $item['category'];
+    
+    if (!isset($cats[$category])) {
+        $cats[$category] = ['id' => count($cats) + 1, 'name' => $category];
+    }
+    
+    $catId = $cats[$category]['id'];
+    
+    if (!isset($itemsByCat[$catId])) {
+        $itemsByCat[$catId] = [];
+    }
+    
+    $itemsByCat[$catId][] = $item;
+}
+
+$cats = array_values($cats);
 
 ?>
 <!doctype html>
