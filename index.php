@@ -1,5 +1,29 @@
 <?php
 $menuFile = __DIR__ . '/menu_items.json';
+$settingsFile = __DIR__ . '/site_settings.json';
+
+if (!file_exists($settingsFile)) {
+    $defaultSettings = [
+        'social_media' => [
+            'facebook' => '',
+            'instagram' => '',
+            'tiktok' => ''
+        ],
+        'contact' => [
+            'phone' => '',
+            'email' => '',
+            'address' => ''
+        ],
+        'neo_digital' => [
+            'name' => 'Neo Digital Solution',
+            'website' => 'https://neodigitalsolution.com',
+            'logo' => 'attached_assets/neo_1762334562172.png'
+        ]
+    ];
+    file_put_contents($settingsFile, json_encode($defaultSettings, JSON_PRETTY_PRINT), LOCK_EX);
+}
+
+$siteSettings = json_decode(file_get_contents($settingsFile), true) ?? [];
 
 if (!file_exists($menuFile)) {
     $defaultMenu = [
@@ -796,8 +820,222 @@ $cats = array_values($cats);
 
   .scroll-top:hover {
     background: var(--primary-color);
-    transform: translateY(-4px) scale(1.1);
+    transform: translateY(-3px);
+  }
+
+  .mobile-menu-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    width: 50px;
+    height: 50px;
+    background: var(--secondary-color);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu-btn:hover {
+    background: var(--primary-color);
+    transform: scale(1.05);
+  }
+
+  .mobile-menu-btn span {
+    width: 24px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 7px);
+  }
+
+  .mobile-menu-btn.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 280px;
+    height: 100vh;
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
     box-shadow: var(--shadow-xl);
+    z-index: 1000;
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    padding: 80px 0 40px;
+  }
+
+  .mobile-menu.active {
+    left: 0;
+  }
+
+  .mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .menu-logo {
+    text-align: center;
+    padding: 0 24px 24px;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 24px;
+  }
+
+  .menu-logo-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+  }
+
+  .menu-logo-icon {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+  }
+
+  .menu-nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .menu-nav-links li {
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .menu-nav-links a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .menu-nav-links a:hover {
+    background: var(--accent-color);
+    color: white;
+    padding-left: 32px;
+  }
+
+  .menu-nav-links .nav-icon {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+  }
+
+  .menu-social {
+    padding: 24px;
+    margin-top: 24px;
+  }
+
+  .menu-social-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 12px;
+  }
+
+  .social-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+  }
+
+  .social-icon:hover {
+    background: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+    transform: translateY(-2px);
+  }
+
+  .neo-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .neo-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .neo-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .neo-link:hover {
+    color: var(--secondary-color);
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 768px) {
+    .mobile-menu {
+      width: 85%;
+      max-width: 320px;
+    }
   }
 
   @media (max-width: 768px) {
@@ -836,7 +1074,70 @@ $cats = array_values($cats);
 </style>
 </head>
 <body>
-  <div class="hero">
+  <button class="mobile-menu-btn" id="menuToggle" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="mobile-menu-overlay" id="menuOverlay"></div>
+
+  <nav class="mobile-menu" id="mobileMenu">
+    <div class="menu-logo">
+      <div class="menu-logo-icon">☕</div>
+      <div class="menu-logo-text">Fuji Coffee</div>
+    </div>
+
+    <ul class="menu-nav-links">
+      <li>
+        <a href="#menu">
+          <span class="nav-icon">🍽️</span>
+          <span>Menu</span>
+        </a>
+      </li>
+      <li>
+        <a href="#feedback">
+          <span class="nav-icon">💬</span>
+          <span>Feedback</span>
+        </a>
+      </li>
+      <li>
+        <a href="#contact">
+          <span class="nav-icon">📞</span>
+          <span>Contact Us</span>
+        </a>
+      </li>
+      <li>
+        <a href="#reviews">
+          <span class="nav-icon">⭐</span>
+          <span>Review</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="menu-social">
+      <div class="menu-social-title">Follow Us</div>
+      <div class="social-icons">
+        <?php if (!empty($siteSettings['social_media']['facebook'])): ?>
+          <a href="<?= htmlspecialchars($siteSettings['social_media']['facebook']) ?>" target="_blank" class="social-icon" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+          </a>
+        <?php endif; ?>
+        <?php if (!empty($siteSettings['social_media']['instagram'])): ?>
+          <a href="<?= htmlspecialchars($siteSettings['social_media']['instagram']) ?>" target="_blank" class="social-icon" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+        <?php endif; ?>
+        <?php if (!empty($siteSettings['social_media']['tiktok'])): ?>
+          <a href="<?= htmlspecialchars($siteSettings['social_media']['tiktok']) ?>" target="_blank" class="social-icon" aria-label="TikTok">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+          </a>
+        <?php endif; ?>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero" id="menu">
     <div class="hero-content">
       <h1 class="menu-title">Fuji Coffee</h1>
       <div class="decorative-line"></div>
@@ -916,9 +1217,9 @@ $cats = array_values($cats);
       </section>
     <?php endforeach; ?>
 
-    <section class="review-section">
+    <section class="review-section" id="feedback">
       <div class="review-content">
-        <div class="review-header">
+        <div class="review-header" id="reviews">
           <div class="review-icon">⭐</div>
           <h2 class="review-title">Join Our VIP Club</h2>
           <p class="review-subtitle">Get exclusive lunch specials & personalized offers</p>
@@ -977,7 +1278,13 @@ $cats = array_values($cats);
 
   <div class="footer">
     <p>&copy; <?=date('Y')?> Fuji Coffee. All rights reserved.</p>
-    <p style="margin-top: 8px; font-size: 0.85rem;">Powered by Neo Digital Soultions
+    <div class="neo-footer">
+      <span style="font-size: 0.85rem;">Powered by</span>
+      <a href="<?= htmlspecialchars($siteSettings['neo_digital']['website'] ?? 'https://neodigitalsolution.com') ?>" target="_blank" class="neo-link">
+        <img src="<?= htmlspecialchars($siteSettings['neo_digital']['logo'] ?? 'attached_assets/neo_1762334562172.png') ?>" alt="Neo Digital Solution" class="neo-logo">
+        <span><?= htmlspecialchars($siteSettings['neo_digital']['name'] ?? 'Neo Digital Solution') ?></span>
+      </a>
+    </div>
   </div>
 
   <div class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
@@ -986,7 +1293,38 @@ $cats = array_values($cats);
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const menuOverlay = document.getElementById('menuOverlay');
       const scrollTopBtn = document.querySelector('.scroll-top');
+
+      function toggleMenu() {
+        menuToggle.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        menuOverlay.classList.toggle('active');
+        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+      }
+
+      menuToggle.addEventListener('click', toggleMenu);
+      menuOverlay.addEventListener('click', toggleMenu);
+
+      document.querySelectorAll('.menu-nav-links a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          toggleMenu();
+          const targetId = this.getAttribute('href');
+          if (targetId.startsWith('#')) {
+            e.preventDefault();
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              setTimeout(() => {
+                const yOffset = -20;
+                const y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+              }, 300);
+            }
+          }
+        });
+      });
       
       window.addEventListener('scroll', function() {
         if (window.pageYOffset > 300) {
